@@ -315,3 +315,48 @@ form textarea {
     justify-content: center;
     margin-top: 25px;
 }
+
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.4);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    width: 420px;              /* <-- fixed width (compact box) */
+    padding: 25px;
+    border-radius: 14px;
+
+    box-shadow: 0 6px 30px rgba(0,0,0,0.25);
+
+    max-height: 80vh;
+    overflow-y: auto;
+
+    /* compact shape */
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.form-grid label {
+    margin-top: 8px;
+    font-weight: bold;
+}
+
+.form-grid input,
+.form-grid select,
+.form-grid textarea {
+    width: 100%;
+    margin-top: 4px;
+    padding: 8px;
+    border-radius: 6px;
+    border: 1px solid #bbb;
+}

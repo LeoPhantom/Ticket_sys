@@ -3,89 +3,143 @@
 <head>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
+
 <body>
-    <header class="nav">
-        <nav>
-            <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('new_ticket') }}">New Ticket</a>
-            <a href="{{ url_for('view_tickets') }}">View Tickets</a>
-            <a href="{{ url_for('new_job') }}">View Jobs</a> 
-        </nav>
-    </header>
 
-    <h1 class="page-title">Job List</h1>
+<header class="nav">
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('new_ticket') }}">New Ticket</a>
+        <a href="{{ url_for('view_tickets') }}">View Tickets</a>
+        <a href="{{ url_for('new_job') }}">View Jobs</a> 
+    </nav>
+</header>
 
-    {% if jobs %}
-    <div class="card-container">
+<h1 class="page-title">Job List</h1>
 
-        {% for j in jobs %}
-        <div class="job-card">
+<div class="center-wrapper">
+    <button id="openJobModal" class="btn-primary">New Job</button>
+</div>
 
-            <div class="job-header">
-                <span class="job-id">#{{ j.id }}</span>
-                
-            </div>
-            <div>
-                <span class="job-title">{{ j.name }}</span>
-            </div>
-            <div class="job-info">
-                <strong>Operator:</strong> {{ j.operator }}
-            </div>
+{% if jobs %}
+<div class="card-container">
+    {% for j in jobs %}
+    <div class="job-card">
 
-            <div class="job-info">
-                <strong>Description:</strong><br>
-                <span>{{ j.description }}</span>
-            </div>
-
-            <div class="job-info">
-                <strong>Impact:</strong> {{ j.impact }}
-            </div>
-
-            <div class="job-info">
-                <strong>Impact on Customer:</strong> {{ j.impact_customer }}
-            </div>
-
-            {% if j.impact_desc %}
-            <div class="job-info">
-                <strong>Impact Details:</strong><br>
-                <span>{{ j.impact_desc }}</span>
-            </div>
-            {% endif %}
-
-            <div class="job-info">
-                <strong>Start Time:</strong> {{ j.start_time }}<br>
-                <strong>End Time:</strong> {{ j.end_time }}
-            </div>
-
-            <form action="{{ url_for('delete_job', job_id=j.id) }}" method="POST" class="delete-section">
-                <button type="submit" class="delete-btn"
-                    onclick="return confirm('Delete this job permanently?');">
-                    Delete
-                </button>
-            </form>
-
+        <div class="job-header">
+            <span class="job-id">#{{ j.id }}</span>
         </div>
-        {% endfor %}
+
+        <div>
+            <span class="job-title">{{ j.name }}</span>
+        </div>
+
+        <div class="job-info">
+            <strong>Operator:</strong> {{ j.operator }}
+        </div>
+
+        <div class="job-info">
+            <strong>Description:</strong><br>
+            <span>{{ j.description }}</span>
+        </div>
+
+        <div class="job-info">
+            <strong>Impact:</strong> {{ j.impact }}
+        </div>
+
+        <div class="job-info">
+            <strong>Impact on Customer:</strong> {{ j.impact_customer }}
+        </div>
+
+        {% if j.impact_desc %}
+        <div class="job-info">
+            <strong>Impact Details:</strong><br>
+            <span>{{ j.impact_desc }}</span>
+        </div>
+        {% endif %}
+
+        <div class="job-info">
+            <strong>Start Time:</strong> {{ j.start_time }}<br>
+            <strong>End Time:</strong> {{ j.end_time }}
+        </div>
+
+        <form action="{{ url_for('delete_job', job_id=j.id) }}" method="POST" class="delete-section">
+            <button type="submit" class="delete-btn"
+                onclick="return confirm('Delete this job permanently?');">
+                Delete
+            </button>
+        </form>
 
     </div>
+    {% endfor %}
+</div>
 
-    {% else %}
-        <p style="text-align:center;">No jobs yet.</p>
-    {% endif %}
+{% else %}
+<p style="text-align:center;">No jobs yet.</p>
+{% endif %}
 
-    <div class="center-wrapper">
-         <button id="openJobModal" class="btn-primary">New Job</button>
+<!-- MODAL (always visible in DOM) -->
+<div id="jobModal" class="modal">
+    <div class="modal-content form-card">
+
+        <h2 class="form-title">Create New Job</h2>
+
+        <form method="POST" class="form-grid">
+
+            <label>Name</label>
+            <input type="text" name="name" required>
+
+            <label>Operator</label>
+            <input type="text" name="operator" required>
+
+            <label>Description</label>
+            <textarea name="description" required></textarea>
+
+            <label>Impact</label>
+            <select name="impact">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+
+            <label>Impact on Customer</label>
+            <select name="impact_customer">
+                <option value="yes">Yes</option>
+                <option value="no">No</option>
+            </select>
+
+            <label>Impact Details</label>
+            <textarea name="impact_desc"></textarea>
+
+            <label>Start Time</label>
+            <input type="datetime-local" name="time_start" required>
+
+            <label>End Time</label>
+            <input type="datetime-local" name="time_end">
+
+            <button type="submit" class="btn-primary full-width">Create Job</button>
+        </form>
+
+        <button id="closeJobModal" class="btn-secondary full-width">Close</button>
+
     </div>
-</body>
+</div>
 
 <script>
-        document.getElementById("openJobModal").onclick = function() {
-            document.getElementById("jobModal").style.display = "block";
-        }
+document.getElementById("openJobModal").onclick = function() {
+    document.getElementById("jobModal").style.display = "block";
+}
 
-        document.getElementById("closeJobModal").onclick = function() {
-            document.getElementById("jobModal").style.display = "none";
-        }
+document.getElementById("closeJobModal").onclick = function() {
+    document.getElementById("jobModal").style.display = "none";
+}
+
+// Click outside closes modal
+window.onclick = function(event) {
+    if (event.target === document.getElementById("jobModal")) {
+        document.getElementById("jobModal").style.display = "none";
+    }
+}
 </script>
 
+</body>
 </html>
