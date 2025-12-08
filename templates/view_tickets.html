@@ -12,7 +12,20 @@
         </nav>
     </header>
 
-    <h1>Hello, Ticket System!</h1>
-    <p>Welcome to the ticket system. Use the navigation above.</p>
+    <h1>All Tickets</h1>
+
+    {% if tickets %}
+        <ul>
+        {% for t in tickets %}
+            <li>
+                <strong>{{ t.title }}</strong> ({{ t.severity }})  
+                <br>
+                {{ t.description }}
+            </li>
+        {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tickets yet.</p>
+    {% endif %}
 </body>
 </html>
