@@ -1,145 +1,132 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
+{% extends "base.html" %}
+{% block title %}Jobs{% endblock %}
 
-<body>
+{% block content %}
 
-<header class="nav">
-    <nav>
-        <a href="{{ url_for('index') }}">Home</a>
-        <a href="{{ url_for('new_ticket') }}">New Ticket</a>
-        <a href="{{ url_for('view_tickets') }}">View Tickets</a>
-        <a href="{{ url_for('new_job') }}">View Jobs</a> 
-    </nav>
-</header>
+<div class="container mt-4">
 
-<h1 class="page-title">Job List</h1>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Job List</h2>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#jobModal">
+            New Job
+        </button>
+    </div>
 
-<div class="center-wrapper">
-    <button id="openJobModal" class="btn-primary">New Job</button>
+    {% if jobs %}
+    <div class="row g-3">
+        {% for j in jobs %}
+        <div class="col-md-6 col-lg-4">
+            <div class="card shadow-sm h-100">
+
+                <div class="card-body d-flex flex-column">
+
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted fw-bold">#{{ j.id }}</span>
+                    </div>
+
+                    <h5 class="mt-2">{{ j.name }}</h5>
+
+                    <p class="mb-1 text-secondary"><strong>Operator:</strong> {{ j.operator }}</p>
+                    <p class="text-muted" style="min-height:60px;">{{ j.description }}</p>
+
+                    <div class="mt-auto d-flex justify-content-between align-items-center">
+                        <div class="text-muted small">
+                            Impact: {{ j.impact }} • Customer: {{ j.impact_customer }}
+                        </div>
+
+                        <form action="{{ url_for('delete_job', job_id=j.id) }}"
+                              method="POST" onsubmit="return confirm('Delete this job permanently?')">
+                            <button class="btn btn-sm btn-outline-danger">Delete</button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <p class="text-center text-muted mt-4">No jobs yet.</p>
+    {% endif %}
 </div>
 
-{% if jobs %}
-<div class="card-container">
-    {% for j in jobs %}
-    <div class="job-card">
 
-        <div class="job-header">
-            <span class="job-id">#{{ j.id }}</span>
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="jobModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Create New Job</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form method="POST">
+        <div class="modal-body">
+
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input name="name" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Operator</label>
+            <input name="operator" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea name="description" class="form-control" rows="3"></textarea>
+          </div>
+
+          <!-- Impact + Customer Impact -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Impact</label>
+              <select name="impact" class="form-select">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Impact on Customer</label>
+              <select name="impactCustomer" class="form-select">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Impact Description -->
+          <div class="mb-3">
+            <label class="form-label">Impact Details</label>
+            <textarea name="impactDesc" class="form-control" rows="2"></textarea>
+          </div>
+
+          <!-- Start & End Time -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Start Time</label>
+              <input type="datetime-local" name="time_start" class="form-control" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">End Time</label>
+              <input type="datetime-local" name="time_end" class="form-control" required>
+            </div>
+          </div>
+
         </div>
 
-        <div>
-            <span class="job-title">{{ j.name }}</span>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Create</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
-
-        <div class="job-info">
-            <strong>Operator:</strong> {{ j.operator }}
-        </div>
-
-        <div class="job-info">
-            <strong>Description:</strong><br>
-            <span>{{ j.description }}</span>
-        </div>
-
-        <div class="job-info">
-            <strong>Impact:</strong> {{ j.impact }}
-        </div>
-
-        <div class="job-info">
-            <strong>Impact on Customer:</strong> {{ j.impact_customer }}
-        </div>
-
-        {% if j.impact_desc %}
-        <div class="job-info">
-            <strong>Impact Details:</strong><br>
-            <span>{{ j.impact_desc }}</span>
-        </div>
-        {% endif %}
-
-        <div class="job-info">
-            <strong>Start Time:</strong> {{ j.start_time }}<br>
-            <strong>End Time:</strong> {{ j.end_time }}
-        </div>
-
-        <form action="{{ url_for('delete_job', job_id=j.id) }}" method="POST" class="delete-section">
-            <button type="submit" class="delete-btn"
-                onclick="return confirm('Delete this job permanently?');">
-                Delete
-            </button>
-        </form>
+      </form>
 
     </div>
-    {% endfor %}
+  </div>
 </div>
-
-{% else %}
-<p style="text-align:center;">No jobs yet.</p>
-{% endif %}
-
-<!-- MODAL (always visible in DOM) -->
-<div id="jobModal" class="modal">
-    <div class="modal-content form-card">
-
-        <h2 class="form-title">Create New Job</h2>
-
-        <form method="POST" class="form-grid">
-
-            <label>Name</label>
-            <input type="text" name="name" required>
-
-            <label>Operator</label>
-            <input type="text" name="operator" required>
-
-            <label>Description</label>
-            <textarea name="description" required></textarea>
-
-            <label>Impact</label>
-            <select name="impact">
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-            </select>
-
-            <label>Impact on Customer</label>
-            <select name="impact_customer">
-                <option value="yes">Yes</option>
-                <option value="no">No</option>
-            </select>
-
-            <label>Impact Details</label>
-            <textarea name="impact_desc"></textarea>
-
-            <label>Start Time</label>
-            <input type="datetime-local" name="time_start" required>
-
-            <label>End Time</label>
-            <input type="datetime-local" name="time_end">
-
-            <button type="submit" class="btn-primary full-width">Create Job</button>
-        </form>
-
-        <button id="closeJobModal" class="btn-secondary full-width">Close</button>
-
-    </div>
-</div>
-
-<script>
-document.getElementById("openJobModal").onclick = function() {
-    document.getElementById("jobModal").style.display = "flex";
-}
-
-document.getElementById("closeJobModal").onclick = function() {
-    document.getElementById("jobModal").style.display = "none";
-}
-
-// Click outside closes modal
-window.onclick = function(event) {
-    if (event.target === document.getElementById("jobModal")) {
-        document.getElementById("jobModal").style.display = "none";
-    }
-}
-</script>
-
-</body>
-</html>
+{% endblock %}

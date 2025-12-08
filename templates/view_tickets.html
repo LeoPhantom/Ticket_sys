@@ -1,39 +1,60 @@
 {% extends "base.html" %}
-
 {% block title %}View Tickets{% endblock %}
 
 {% block content %}
+<ul class="list-group">
 
-<h1 class="page-title">All Tickets</h1>
+{% for t in tickets %}
+<li class="list-group-item">
 
-{% if tickets %}
-    <ul class="ticket-list">
-    {% for t in tickets %}
-       <li class="ticket-card">
+    <div class="d-flex justify-content-between">
+        <!-- Left side -->
+        <div class="me-3" style="max-width:80%;">
+            <h5 class="fw-bold mb-1">{{ t.title }}</h5>
 
-          <div class="ticket-id">INC{{ t.id }}</div>
+            <p class="mb-2 text-muted" style="white-space:pre-wrap;">
+                {{ t.description }}
+            </p>
 
-          <div class="ticket-content">
-              <div class="ticket-row">
-                  <strong class="ticket-title">{{ t.title }}</strong>
-                  <span class="ticket-severity severity-{{ t.severity }}">{{ t.severity|capitalize }}</span>
-              </div>
+            <!-- Extra metadata -->
+            <div class="small text-secondary">
+                <div><strong>Operator:</strong> {{ t.get('operator', '-') }}</div>
+                <div><strong>Urgency:</strong> {{ t.get('urgency','low')|capitalize }}</div>
+                <div><strong>Impact:</strong> {{ t.get('severity_impact', '-') }}</div>
+                <div><strong>Time:</strong> {{ t.get('start_time','-') }} → {{ t.get('end_time','-') }}</div>
+            </div>
+        </div>
 
-              <p class="ticket-desc">{{ t.description }}</p>
+        <!-- Right side -->
+        <div class="text-end">
 
-              <!-- Add this -->
-              <div class="ticket-actions">
-                  <form action="{{ url_for('delete_ticket', ticket_id=t.id) }}" method="POST">
-                      <button class="delete-btn">Delete</button>
-                  </form>
-              </div>
-          </div>
+            <!-- Severity Badge with color -->
+            {% set sev = t.get('severity_impact', t.get('severity','low')).lower() %}
+            <span class="
+                badge 
+                {% if sev == 'high' %} bg-danger
+                {% elif sev == 'medium' %} bg-warning text-dark
+                {% elif sev == 'low' %} bg-success
+                {% else %} bg-secondary 
+                {% endif %}
+                mb-2
+            ">
+                {{ sev.capitalize() }}
+            </span>
 
-      </li>
-    {% endfor %}
-    </ul>
-{% else %}
-    <p>No tickets yet.</p>
-{% endif %}
+            <!-- Delete button -->
+            <form method="POST"
+                  action="{{ url_for('delete_ticket', ticket_id=t.id) }}">
+                <button class="btn btn-outline-danger btn-sm mt-1">
+                    Delete
+                </button>
+            </form>
 
+        </div>
+    </div>
+
+</li>
+{% endfor %}
+
+</ul>
 {% endblock %}

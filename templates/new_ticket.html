@@ -1,26 +1,92 @@
 {% extends "base.html" %}
-
-{% block title %}New Ticket{% endblock %}
+{% block title %}View Tickets{% endblock %}
 
 {% block content %}
-<h1 class="page-title">Create a New Ticket</h1>
 
-<form method="POST" class="form-card">
+<div class="container mt-4">
 
-    <label>Title</label>
-    <input type="text" name="title" required>
+    <h2 class="mb-4 text-center">All Tickets</h2>
 
-    <label>Description</label>
-    <textarea name="description" rows="4" required></textarea>
+    <!-- Filters -->
+    <div class="d-flex gap-2 mb-3 justify-content-center">
+        <button class="btn btn-outline-primary btn-sm" data-filter="all">All</button>
+        <button class="btn btn-outline-danger btn-sm" data-filter="high">High</button>
+        <button class="btn btn-outline-warning btn-sm" data-filter="medium">Medium</button>
+        <button class="btn btn-outline-success btn-sm" data-filter="low">Low</button>
+    </div>
 
-    <label>Severity</label>
-    <select name="severity" required>
-        <option value="low">Low</option>
-        <option value="medium">Medium</option>
-        <option value="high">High</option>
-    </select>
+    {% if tickets %}
+    <div class="row g-3">
+        {% for t in tickets %}
+        <div class="col-md-6 col-lg-4 ticket-card-wrapper"
+             data-severity="{{ t.get('severity_impact', t.get('severity','none')) }}">
 
-    <button type="submit" class="btn-primary">Create Ticket</button>
+            <div class="card shadow-sm h-100">
 
-</form>
+                <div class="card-body">
+
+                    <!-- Ticket ID + Title -->
+                    <div class="d-flex justify-content-between">
+                        <h6 class="text-muted">INC{{ t.id }}</h6>
+                        <span class="fw-bold">{{ t.title }}</span>
+                    </div>
+
+                    <!-- Severity + urgency badges -->
+                    <div class="mt-2">
+                        {% set sev = (t.get('severity_impact', t.get('severity','none'))).lower() %}
+                        <span class="badge bg-{% if sev=='high' %}danger{% elif sev=='medium' %}warning text-dark{% else %}success{% endif %}">
+                            {{ sev.capitalize() }}
+                        </span>
+
+                        <span class="badge bg-info">
+                            {{ t.get('urgency','Low')|capitalize }}
+                        </span>
+                    </div>
+
+                    <hr>
+
+                    <!-- Operator + Schedule -->
+                    <p class="mb-1">
+                        <strong>Operator:</strong> {{ t.get('operator','-') }}
+                    </p>
+                    <p class="mb-1">
+                        <strong>Estimated:</strong> {{ t.get('start_time','-') }}
+                        → {{ t.get('end_time','-') }}
+                    </p>
+
+                    <p class="mt-3 text-secondary">{{ t.get('description','') }}</p>
+
+                    <div class="d-flex justify-content-end">
+                        <form action="{{ url_for('delete_ticket', ticket_id=t.id) }}" method="POST">
+                            <button class="btn btn-sm btn-outline-danger">
+                                Delete
+                            </button>
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <p class="text-center text-muted mt-4">No tickets yet.</p>
+    {% endif %}
+
+</div>
+
+<script>
+document.querySelectorAll('[data-filter]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const f = btn.dataset.filter;
+        document.querySelectorAll('.ticket-card-wrapper').forEach(card => {
+            if (f === 'all' || card.dataset.severity === f) card.style.display = "";
+            else card.style.display = "none";
+        });
+    });
+});
+</script>
+
 {% endblock %}

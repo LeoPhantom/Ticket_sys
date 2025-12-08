@@ -1,66 +1,46 @@
 {% extends "base.html" %}
 
-{% block title %}Home{% endblock %}
-
 {% block content %}
 
-<h1 style="text-align:center;">Hello, Ticket System!</h1>
+<h1 class="text-center my-4">Jobs</h1>
 
 {% if jobs %}
-<ul style="list-style:none; padding:0; margin:0;">
+<div class="accordion" id="jobsAccordion">
+
     {% for j in jobs %}
-    <li class="job-card">
+    <div class="accordion-item">
+        <h2 class="accordion-header" id="heading-{{ j.id }}">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#job-{{ j.id }}">
+                #{{ j.id }} — {{ j.name }}
+            </button>
+        </h2>
 
-        <!-- Header (click to expand) -->
-        <div class="job-header" onclick="toggleJob('{{ j.id }}')">
-            <span class="job-title">#{{ j.id }} — {{ j.name }}</span>
-            <span class="job-toggle" id="arrow-{{ j.id }}">▼</span>
-        </div>
+        <div id="job-{{ j.id }}" class="accordion-collapse collapse" data-bs-parent="#jobsAccordion">
+            <div class="accordion-body">
 
-        <!-- Hidden content -->
-        <div class="job-content" id="job-{{ j.id }}">
-            <div><strong>Operator:</strong> {{ j.operator }}</div>
+                <p><strong>Operator:</strong> {{ j.operator }}</p>
+                <p><strong>Description:</strong><br>{{ j.description }}</p>
+                <p><strong>Impact:</strong> {{ j.impact }}</p>
+                <p><strong>Customer Impact:</strong> {{ j.impact_customer }}</p>
 
-            <div><strong>Description:</strong><br>
-                {{ j.description }}
-            </div>
+                {% if j.impact_desc %}
+                <p><strong>Impact Details:</strong><br>{{ j.impact_desc }}</p>
+                {% endif %}
 
-            <div><strong>Impact:</strong> {{ j.impact }}</div>
-            <div><strong>Impact on Customer:</strong> {{ j.impact_customer }}</div>
+                <p>
+                    <strong>Start:</strong> {{ j.start_time }}<br>
+                    <strong>End:</strong> {{ j.end_time }}
+                </p>
 
-            {% if j.impact_desc %}
-            <div>
-                <strong>Impact Details:</strong><br>
-                {{ j.impact_desc }}
-            </div>
-            {% endif %}
-
-            <div>
-                <strong>Start time:</strong> {{ j.start_time }}<br>
-                <strong>End time:</strong> {{ j.end_time }}
             </div>
         </div>
 
-    </li>
+    </div>
     {% endfor %}
-</ul>
+
+</div>
 {% else %}
-<p>No jobs yet.</p>
+<p class="text-center text-muted">No jobs yet.</p>
 {% endif %}
-
-<script>
-function toggleJob(id) {
-    let content = document.getElementById("job-" + id);
-    let arrow = document.getElementById("arrow-" + id);
-
-    if (content.style.display === "block") {
-        content.style.display = "none";
-        arrow.style.transform = "rotate(0deg)";
-    } else {
-        content.style.display = "block";
-        arrow.style.transform = "rotate(180deg)";
-    }
-}
-</script>
 
 {% endblock %}
