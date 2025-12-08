@@ -1,21 +1,11 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <header class="nav">
-        <nav>
-            <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('new_ticket') }}">New Ticket</a>
-            <a href="{{ url_for('view_tickets') }}">View Tickets</a>
-            <a href="{{ url_for('new_job') }}">View Jobs</a>
-        </nav>
-    </header>
+{% extends "base.html" %}
 
+{% block title %}New Ticket{% endblock %}
+
+{% block content %}
 <h1 class="page-title">Create a New Ticket</h1>
 
-<form method="POST" class="ticket-form">
+<form method="POST" class="form-card">
 
     <label>Title</label>
     <input type="text" name="title" required>
@@ -30,8 +20,7 @@
         <option value="high">High</option>
     </select>
 
-    <button type="submit" class="create-btn">Create Ticket</button>
-</form>
+    <button type="submit" class="btn-primary">Create Ticket</button>
 
-</body>
-</html>
+</form>
+{% endblock %}

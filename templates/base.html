@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>{% block title %}My App{% endblock %}</title>
+</head>
+
+<body>
+
+<header class="nav">
+    <nav>
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('new_ticket') }}">New Ticket</a>
+        <a href="{{ url_for('view_tickets') }}">View Tickets</a>
+        <a href="{{ url_for('new_job') }}">View Jobs</a>
+    </nav>
+</header>
+
+<div class="container">
+    {% block content %}
+    {% endblock %}
+</div>
+
+</body>
+</html>

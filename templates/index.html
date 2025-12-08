@@ -1,63 +1,51 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <header class="nav">
-        <nav>
-            <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('new_ticket') }}">New Ticket</a>
-            <a href="{{ url_for('view_tickets') }}">View Tickets</a>
-            <a href="{{ url_for('new_job') }}">View Jobs</a>
-        </nav>
-    </header>
+{% extends "base.html" %}
 
-    <h1 style="text-align:center;">Hello, Ticket System!</h1>
-    
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<h1 style="text-align:center;">Hello, Ticket System!</h1>
 
 {% if jobs %}
-    <ul style="list-style:none; padding:0; margin:0;">
-
+<ul style="list-style:none; padding:0; margin:0;">
     {% for j in jobs %}
-        <li class="job-card">
+    <li class="job-card">
 
-            <!-- Header (click to expand) -->
-            <div class="job-header" onclick="toggleJob('{{ j.id }}')">
-                <span class="job-title">#{{ j.id }} — {{ j.name }}</span>
-                <span class="job-toggle" id="arrow-{{ j.id }}">▼</span>
+        <!-- Header (click to expand) -->
+        <div class="job-header" onclick="toggleJob('{{ j.id }}')">
+            <span class="job-title">#{{ j.id }} — {{ j.name }}</span>
+            <span class="job-toggle" id="arrow-{{ j.id }}">▼</span>
+        </div>
+
+        <!-- Hidden content -->
+        <div class="job-content" id="job-{{ j.id }}">
+            <div><strong>Operator:</strong> {{ j.operator }}</div>
+
+            <div><strong>Description:</strong><br>
+                {{ j.description }}
             </div>
 
-            <!-- Hidden content -->
-            <div class="job-content" id="job-{{ j.id }}">
-                <div><strong>Operator:</strong> {{ j.operator }}</div>
+            <div><strong>Impact:</strong> {{ j.impact }}</div>
+            <div><strong>Impact on Customer:</strong> {{ j.impact_customer }}</div>
 
-                <div><strong>Description:</strong><br>
-                    {{ j.description }}
-                </div>
-
-                <div><strong>Impact:</strong> {{ j.impact }}</div>
-                <div><strong>Impact on Customer:</strong> {{ j.impact_customer }}</div>
-
-                {% if j.impact_desc %}
-                <div>
-                    <strong>Impact Details:</strong><br>
-                    {{ j.impact_desc }}
-                </div>
-                {% endif %}
-
-                <div>
-                    <strong>Start time:</strong> {{ j.start_time }}<br>
-                    <strong>End time:</strong> {{ j.end_time }}
-                </div>
+            {% if j.impact_desc %}
+            <div>
+                <strong>Impact Details:</strong><br>
+                {{ j.impact_desc }}
             </div>
+            {% endif %}
 
-        </li>
+            <div>
+                <strong>Start time:</strong> {{ j.start_time }}<br>
+                <strong>End time:</strong> {{ j.end_time }}
+            </div>
+        </div>
+
+    </li>
     {% endfor %}
-
-    </ul>
+</ul>
 {% else %}
-    <p>No jobs yet.</p>
+<p>No jobs yet.</p>
 {% endif %}
 
 <script>
@@ -74,5 +62,5 @@ function toggleJob(id) {
     }
 }
 </script>
-</body>
-</html>
+
+{% endblock %}

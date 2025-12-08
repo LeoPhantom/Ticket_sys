@@ -1,42 +1,39 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-</head>
-<body>
-    <header class="nav">
-        <nav>
-            <a href="{{ url_for('index') }}">Home</a>
-            <a href="{{ url_for('new_ticket') }}">New Ticket</a>
-            <a href="{{ url_for('view_tickets') }}">View Tickets</a>
-            <a href="{{ url_for('new_job') }}">View Jobs</a>
-        </nav>
-    </header>
+{% extends "base.html" %}
 
-<h1 style="text-align:center; margin-bottom:25px;">All Tickets</h1>
+{% block title %}View Tickets{% endblock %}
+
+{% block content %}
+
+<h1 class="page-title">All Tickets</h1>
 
 {% if tickets %}
     <ul class="ticket-list">
     {% for t in tickets %}
-        <li class="ticket-card">
-            
-            <div class="ticket-id">#{{ t.id }}</div>
+       <li class="ticket-card">
 
-            <div class="ticket-content">
-                <strong class="ticket-title">{{ t.title }}</strong>
-                <span class="ticket-severity">{{ t.severity }}</span>
-                <p class="ticket-desc">{{ t.description }}</p>
-            </div>
+          <div class="ticket-id">INC{{ t.id }}</div>
 
-            <form action="{{ url_for('delete_ticket', ticket_id=t.id) }}" method="POST">
-                <button class="delete-btn">Delete</button>
-            </form>
-        </li>
+          <div class="ticket-content">
+              <div class="ticket-row">
+                  <strong class="ticket-title">{{ t.title }}</strong>
+                  <span class="ticket-severity severity-{{ t.severity }}">{{ t.severity|capitalize }}</span>
+              </div>
+
+              <p class="ticket-desc">{{ t.description }}</p>
+
+              <!-- Add this -->
+              <div class="ticket-actions">
+                  <form action="{{ url_for('delete_ticket', ticket_id=t.id) }}" method="POST">
+                      <button class="delete-btn">Delete</button>
+                  </form>
+              </div>
+          </div>
+
+      </li>
     {% endfor %}
     </ul>
 {% else %}
     <p>No tickets yet.</p>
 {% endif %}
 
-</body>
-</html>
+{% endblock %}
