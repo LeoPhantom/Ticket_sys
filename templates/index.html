@@ -13,53 +13,45 @@
         </nav>
     </header>
 
-    <h1>Hello, Ticket System!</h1>
-    <p>Welcome to the ticket system. Use the navigation above.</p>
+    <h1 style="text-align:center;">Hello, Ticket System!</h1>
+    
 
 {% if jobs %}
     <ul style="list-style:none; padding:0; margin:0;">
 
     {% for j in jobs %}
-        <li style="
-            background:#fff;
-            padding:18px;
-            margin-bottom:15px;
-            border-radius:10px;
-            border:1px solid #e0e0e0;
-            box-shadow:0 2px 5px rgba(0,0,0,0.05);
-        ">
-            <div style="font-size:20px; font-weight:bold; margin-bottom:5px;">
-                #{{ j.id }} — {{ j.name }}
+        <li class="job-card">
+
+            <!-- Header (click to expand) -->
+            <div class="job-header" onclick="toggleJob('{{ j.id }}')">
+                <span class="job-title">#{{ j.id }} — {{ j.name }}</span>
+                <span class="job-toggle" id="arrow-{{ j.id }}">▼</span>
             </div>
 
-            <div style="margin-bottom:10px; color:#555;">
-                <strong>Operator:</strong> {{ j.operator }}
+            <!-- Hidden content -->
+            <div class="job-content" id="job-{{ j.id }}">
+                <div><strong>Operator:</strong> {{ j.operator }}</div>
+
+                <div><strong>Description:</strong><br>
+                    {{ j.description }}
+                </div>
+
+                <div><strong>Impact:</strong> {{ j.impact }}</div>
+                <div><strong>Impact on Customer:</strong> {{ j.impact_customer }}</div>
+
+                {% if j.impact_desc %}
+                <div>
+                    <strong>Impact Details:</strong><br>
+                    {{ j.impact_desc }}
+                </div>
+                {% endif %}
+
+                <div>
+                    <strong>Start time:</strong> {{ j.start_time }}<br>
+                    <strong>End time:</strong> {{ j.end_time }}
+                </div>
             </div>
 
-            <div style="margin-bottom:10px;">
-                <strong>Description:</strong><br>
-                <span style="color:#444;">{{ j.description }}</span>
-            </div>
-
-            <div style="margin-bottom:5px;">
-                <strong>Impact:</strong> {{ j.impact }}
-            </div>
-
-            <div style="margin-bottom:5px;">
-                <strong>Impact on Customer:</strong> {{ j.impact_customer }}
-            </div>
-
-            {% if j.impact_desc %}
-            <div style="margin-bottom:10px;">
-                <strong>Impact Details:</strong><br>
-                <span style="color:#555;">{{ j.impact_desc }}</span>
-            </div>
-            {% endif %}
-
-            <div style="margin-top:10px;">
-                <strong>Start time:</strong> {{ j.start_time }}<br>
-                <strong>End time:</strong> {{ j.end_time }}
-            </div>
         </li>
     {% endfor %}
 
@@ -68,6 +60,19 @@
     <p>No jobs yet.</p>
 {% endif %}
 
+<script>
+function toggleJob(id) {
+    let content = document.getElementById("job-" + id);
+    let arrow = document.getElementById("arrow-" + id);
 
+    if (content.style.display === "block") {
+        content.style.display = "none";
+        arrow.style.transform = "rotate(0deg)";
+    } else {
+        content.style.display = "block";
+        arrow.style.transform = "rotate(180deg)";
+    }
+}
+</script>
 </body>
 </html>

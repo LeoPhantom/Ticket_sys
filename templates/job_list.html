@@ -14,52 +14,53 @@
     </header>
 
     <h1>Hello, Ticket System!</h1>
-    <p>Welcome Jobs.</p>
-    <button id="openJobModal">New Job</button>
-        <div id="jobModal" class="modal">
-  <div class="modal-content">
+<button id="openJobModal" class="btn-primary">New Job</button>
 
-            <h2>Create New Job</h2>
+<div id="jobModal" class="modal">
+    <div class="modal-content form-card">
 
-            <form method="POST">
+        <h2 class="form-title">Create New Job</h2>
 
-            <label>Name:</label>
+        <form method="POST" class="form-grid">
+
+            <label>Name</label>
             <input type="text" name="name" required>
 
-            <label>Operator:</label>
+            <label>Operator</label>
             <input type="text" name="operator" required>
 
-            <label>Description:</label>
+            <label>Description</label>
             <textarea name="description" required></textarea>
 
-            <label>Impact:</label>
+            <label>Impact</label>
             <select name="impact">
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
             </select>
 
-            <label>Impact on customer:</label>
+            <label>Impact on Customer</label>
             <select name="impact_customer">
                 <option value="yes">Yes</option>
                 <option value="no">No</option>
             </select>
 
-            <label>What is the impact:</label>
+            <label>Impact Details</label>
             <textarea name="impact_desc"></textarea>
 
-            <label>Time Start:</label>
+            <label>Start Time</label>
             <input type="datetime-local" name="time_start" required>
 
-            <label>Time End:</label>
+            <label>End Time</label>
             <input type="datetime-local" name="time_end">
 
-            <button type="submit">Create Job</button>
-            </form>
+            <button type="submit" class="btn-primary full-width">Create Job</button>
+        </form>
 
-            <button id="closeJobModal">Close</button>
-          
-        </div>
+        <button id="closeJobModal" class="btn-secondary full-width">Close</button>
+
+    </div>
 </div>
+
 
 {% if jobs %}
     <ul style="list-style:none; padding:0; margin:0;">

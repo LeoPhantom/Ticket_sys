@@ -190,3 +190,134 @@ h1 {
     background: #005fcc;
 }
 
+.job-card {
+    background: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 0;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    overflow: hidden;
+}
+
+.job-header {
+    padding: 15px 18px;
+    display: flex;
+    justify-content: space-between;
+    cursor: pointer;
+    background: #f7f7f7;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.job-title {
+    color: #333;
+}
+
+.job-toggle {
+    font-size: 20px;
+    transition: transform 0.2s;
+}
+
+.job-content {
+    padding: 15px 18px;
+    display: none;
+    color: #444;
+    line-height: 1.5;
+    background: #fff;
+}
+
+.job-content div {
+    margin-bottom: 10px;
+}
+
+/* Modal Background */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    backdrop-filter: blur(3px);
+}
+
+/* Modal Content */
+.modal-content.form-card {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    width: 450px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    animation: popup 0.2s ease-out;
+}
+
+@keyframes popup {
+    from { transform: scale(0.93); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+/* Form Styles */
+.form-title {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.form-grid label {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.form-grid input,
+.form-grid textarea,
+.form-grid select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+textarea {
+    height: 80px;
+}
+
+/* Buttons */
+.btn-primary {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 20px;
+}
+
+.btn-primary:hover {
+    background: #1e4ecf;
+}
+
+.btn-secondary {
+    background: #999;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-secondary:hover {
+    background: #777;
+}
+
+.full-width {
+    width: 100%;
+}
+
