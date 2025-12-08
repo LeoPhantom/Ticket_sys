@@ -31,7 +31,8 @@ def save_job(jobs):
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    jobs = load_jobs()
+    return render_template('index.html', jobs=jobs)
 
 @app.route('/new_ticket', methods=['GET', 'POST'])
 def new_ticket():
