@@ -140,7 +140,12 @@ def new_job():
     jobs = load_jobs()
     return render_template('job_list.html', jobs=jobs)
 
-    
+@app.route('/delete_job/<int:job_id>', methods=['POST'])
+def delete_job(job_id):
+    jobs = load_jobs()
+    jobs = [j for j in jobs if j.get("id") != job_id]
+    save_job(jobs)
+    return redirect(url_for('new_job'))    
 
 
 if __name__ == "__main__":
