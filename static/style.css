@@ -7,7 +7,7 @@ h1 {
 }
 
 .nav {
-    background: #333;
+    background: #0f66d8;
     padding: 10px;
 }
 
@@ -45,4 +45,29 @@ h1 {
     gap: 15px;
 }
 
+#openJobModal {
+    background: #007bff;  /* clean blue */
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.25s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
+
+/* Hover effect */
+#openJobModal:hover {
+    background: #0056d2;  /* darker blue */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+/* Active click effect */
+#openJobModal:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+}
 

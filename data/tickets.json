@@ -1,17 +1,9 @@
 [
+   
     {
-        "title": "test",
-        "description": "none",
-        "severity": "low"
-    },
-    {
-        "title": "test2",
-        "description": "some",
-        "severity": "medium"
-    },
-    {
-        "title": "test",
-        "description": "test",
+        "id": 2,
+        "title": "new ticket",
+        "description": "new ticket ",
         "severity": "low"
     }
 ]

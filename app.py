@@ -87,8 +87,10 @@ def new_ticket():
         severity = request.form['severity']
 
         tickets = load_tickets()
+        id = set_id('ticket')
 
         tickets.append({
+            'id' : id,
             'title': title,
             'description': description,
             'severity': severity
