@@ -1,8 +1,21 @@
 from flask import Flask, render_template, request, redirect, url_for
+import json
+import os
 
 app = Flask(__name__)
 
-tickets = []
+#tickets = []
+def load_tickets():
+    if os.path.exists("tickets.json"):
+        with open("tickets.json", "r") as f:
+            return json.load(f)
+    return [] 
+
+
+def save_ticket(tickets):
+    with open ("tickets.json", "w") as f:
+        json.dump(tickets, f , indent=4)
+
 
 @app.route('/')
 def index():
@@ -15,11 +28,15 @@ def new_ticket():
         description = request.form['description']
         severity = request.form['severity']
 
+        tickets = load_tickets()
+
         tickets.append({
             'title': title,
             'description': description,
             'severity': severity
         })
+
+        save_ticket(tickets)
 
         return redirect(url_for('view_tickets'))
 
@@ -27,6 +44,7 @@ def new_ticket():
 
 @app.route('/tickets')
 def view_tickets():
+    tickets = load_tickets()
     return render_template('view_tickets.html', tickets=tickets)
 
 

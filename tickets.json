@@ -1,0 +1,12 @@
+[
+    {
+        "title": "test",
+        "description": "none",
+        "severity": "low"
+    },
+    {
+        "title": "test2",
+        "description": "some",
+        "severity": "medium"
+    }
+]
