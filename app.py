@@ -47,6 +47,10 @@ def view_tickets():
     tickets = load_tickets()
     return render_template('view_tickets.html', tickets=tickets)
 
+@app.route('/jobs')
+def job_list():
+    return render_template('job_list.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
