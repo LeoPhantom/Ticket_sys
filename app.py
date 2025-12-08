@@ -149,6 +149,12 @@ def delete_job(job_id):
     save_job(jobs)
     return redirect(url_for('new_job'))    
 
+@app.route('/delete_ticket/<int:ticket_id>', methods=['POST'])
+def delete_ticket(ticket_id):
+    tickets = load_tickets()
+    tickets = [t for t in tickets if t.get("id") != ticket_id]
+    save_ticket(tickets)
+    return redirect(url_for('view_tickets'))
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -13,18 +13,25 @@
         </nav>
     </header>
 
-    <h1>Create a New Ticket</h1>
+<h1 class="page-title">Create a New Ticket</h1>
 
-    <form method="POST">
-        Title: <input type="text" name="title"><br>
-        Description: <textarea name="description"></textarea><br>
-        Severity:
-        <select name="severity">
-            <option>low</option>
-            <option>medium</option>
-            <option>high</option>
-        </select>
-        <button type="submit" id="openJobModal">Create</button>
-    </form>
+<form method="POST" class="ticket-form">
+
+    <label>Title</label>
+    <input type="text" name="title" required>
+
+    <label>Description</label>
+    <textarea name="description" rows="4" required></textarea>
+
+    <label>Severity</label>
+    <select name="severity" required>
+        <option value="low">Low</option>
+        <option value="medium">Medium</option>
+        <option value="high">High</option>
+    </select>
+
+    <button type="submit" class="create-btn">Create Ticket</button>
+</form>
+
 </body>
 </html>
