@@ -62,29 +62,49 @@
 </div>
 
   {% if jobs %}
-    <ul style="list-style:none; padding:0;">
+    <ul style="list-style:none; padding:0; margin:0;">
 
     {% for j in jobs %}
         <li style="
-            background:#f4f4f4;
-            padding:15px;
-            margin-bottom:12px;
-            border-radius:8px;
-            border:1px solid #ddd;
+            background:#fff;
+            padding:18px;
+            margin-bottom:15px;
+            border-radius:10px;
+            border:1px solid #e0e0e0;
+            box-shadow:0 2px 5px rgba(0,0,0,0.05);
         ">
-            <strong style="font-size:18px;">{{ j.name }}</strong>
-            <div><strong>Operator:</strong> {{ j.operator }}</div>
-            <div><strong>Description:</strong> {{ j.description }}</div>
+            <div style="font-size:20px; font-weight:bold; margin-bottom:5px;">
+                #{{ j.id }} — {{ j.name }}
+            </div>
 
-            <div><strong>Impact:</strong> {{ j.impact }}</div>
-            <div><strong>Impact on Customer:</strong> {{ j.impact_customer }}</div>
-            
+            <div style="margin-bottom:10px; color:#555;">
+                <strong>Operator:</strong> {{ j.operator }}
+            </div>
+
+            <div style="margin-bottom:10px;">
+                <strong>Description:</strong><br>
+                <span style="color:#444;">{{ j.description }}</span>
+            </div>
+
+            <div style="margin-bottom:5px;">
+                <strong>Impact:</strong> {{ j.impact }}
+            </div>
+
+            <div style="margin-bottom:5px;">
+                <strong>Impact on Customer:</strong> {{ j.impact_customer }}
+            </div>
+
             {% if j.impact_desc %}
-                <div><strong>Impact Details:</strong> {{ j.impact_desc }}</div>
+            <div style="margin-bottom:10px;">
+                <strong>Impact Details:</strong><br>
+                <span style="color:#555;">{{ j.impact_desc }}</span>
+            </div>
             {% endif %}
 
-            <div><strong>Start Time:</strong> {{ j.time_start }}</div>
-            <div><strong>End Time:</strong> {{ j.time_end }}</div>
+            <div style="margin-top:10px;">
+                <strong>Start time:</strong> {{ j.start_time }}<br>
+                <strong>End time:</strong> {{ j.end_time }}
+            </div>
         </li>
     {% endfor %}
 
@@ -92,6 +112,7 @@
 {% else %}
     <p>No jobs yet.</p>
 {% endif %}
+
 
 </body>
 <script>
