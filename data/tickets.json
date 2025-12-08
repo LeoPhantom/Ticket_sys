@@ -8,5 +8,10 @@
         "title": "test2",
         "description": "some",
         "severity": "medium"
+    },
+    {
+        "title": "test",
+        "description": "test",
+        "severity": "low"
     }
 ]
