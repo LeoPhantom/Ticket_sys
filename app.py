@@ -82,20 +82,33 @@ def index():
 @app.route('/new_ticket', methods=['GET', 'POST'])
 def new_ticket():
     if request.method == 'POST':
-        title = request.form['title']
-        description = request.form['description']
-        severity = request.form['severity']
+        title = request.form.get('title')
+        operator = request.form.get('operator')
+        urgency = request.form.get('urgency')
+        description = request.form.get('description')
+        severity = request.form.get('severity_impact')   # from dropdown/badge
+        start_time = request.form['start_time']
+        end_time = request.form['end_time']
 
+        # Load current tickets
         tickets = load_tickets()
-        id = set_id('ticket')
 
+        # Generate new ticket ID
+        ticket_id = set_id('ticket')
+
+        # Append new ticket
         tickets.append({
-            'id' : id,
+            'id': ticket_id,
             'title': title,
+            'operator' : operator,
+            'urgency' : urgency,
             'description': description,
-            'severity': severity
+            'severity': severity,
+            'start_time': start_time,
+            'end_time': end_time
         })
 
+        # Save all tickets
         save_ticket(tickets)
 
         return redirect(url_for('view_tickets'))

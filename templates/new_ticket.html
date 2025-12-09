@@ -1,92 +1,70 @@
 {% extends "base.html" %}
-{% block title %}View Tickets{% endblock %}
+{% block title %}New Ticket{% endblock %}
 
 {% block content %}
 
-<div class="container mt-4">
+<h2 class="mb-4">Create a New Ticket</h2>
 
-    <h2 class="mb-4 text-center">All Tickets</h2>
+<form method="POST" class="card p-4 shadow-sm">
 
-    <!-- Filters -->
-    <div class="d-flex gap-2 mb-3 justify-content-center">
-        <button class="btn btn-outline-primary btn-sm" data-filter="all">All</button>
-        <button class="btn btn-outline-danger btn-sm" data-filter="high">High</button>
-        <button class="btn btn-outline-warning btn-sm" data-filter="medium">Medium</button>
-        <button class="btn btn-outline-success btn-sm" data-filter="low">Low</button>
+    <!-- Title -->
+    <div class="mb-3">
+        <label class="form-label">Title</label>
+        <input type="text" name="title" class="form-control" required>
     </div>
 
-    {% if tickets %}
-    <div class="row g-3">
-        {% for t in tickets %}
-        <div class="col-md-6 col-lg-4 ticket-card-wrapper"
-             data-severity="{{ t.get('severity_impact', t.get('severity','none')) }}">
+    <!-- Operator -->
+    <div class="mb-3">
+        <label class="form-label">Operator</label>
+        <input type="text" name="operator" class="form-control" required>
+    </div>
 
-            <div class="card shadow-sm h-100">
-
-                <div class="card-body">
-
-                    <!-- Ticket ID + Title -->
-                    <div class="d-flex justify-content-between">
-                        <h6 class="text-muted">INC{{ t.id }}</h6>
-                        <span class="fw-bold">{{ t.title }}</span>
-                    </div>
-
-                    <!-- Severity + urgency badges -->
-                    <div class="mt-2">
-                        {% set sev = (t.get('severity_impact', t.get('severity','none'))).lower() %}
-                        <span class="badge bg-{% if sev=='high' %}danger{% elif sev=='medium' %}warning text-dark{% else %}success{% endif %}">
-                            {{ sev.capitalize() }}
-                        </span>
-
-                        <span class="badge bg-info">
-                            {{ t.get('urgency','Low')|capitalize }}
-                        </span>
-                    </div>
-
-                    <hr>
-
-                    <!-- Operator + Schedule -->
-                    <p class="mb-1">
-                        <strong>Operator:</strong> {{ t.get('operator','-') }}
-                    </p>
-                    <p class="mb-1">
-                        <strong>Estimated:</strong> {{ t.get('start_time','-') }}
-                        → {{ t.get('end_time','-') }}
-                    </p>
-
-                    <p class="mt-3 text-secondary">{{ t.get('description','') }}</p>
-
-                    <div class="d-flex justify-content-end">
-                        <form action="{{ url_for('delete_ticket', ticket_id=t.id) }}" method="POST">
-                            <button class="btn btn-sm btn-outline-danger">
-                                Delete
-                            </button>
-                        </form>
-                    </div>
-
-                </div>
-            </div>
-
+    <!-- Urgency + Severity Impact -->
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Urgency</label>
+            <select name="urgency" class="form-select" required>
+                <option value="low">Low</option>
+                <option value="high">High</option>
+            </select>
         </div>
-        {% endfor %}
+
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Severity Impact</label>
+            <select name="severity_impact" class="form-select" required>
+                <option value="none">None</option>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+        </div>
     </div>
 
-    {% else %}
-    <p class="text-center text-muted mt-4">No tickets yet.</p>
-    {% endif %}
+    <!-- Description -->
+    <div class="mb-3">
+        <label class="form-label">Description</label>
+        <textarea name="description" rows="4" class="form-control" required></textarea>
+    </div>
 
-</div>
+    <!-- Time fields -->
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Estimated Start</label>
+            <input type="datetime-local" name="start_time" class="form-control" required>
+        </div>
 
-<script>
-document.querySelectorAll('[data-filter]').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const f = btn.dataset.filter;
-        document.querySelectorAll('.ticket-card-wrapper').forEach(card => {
-            if (f === 'all' || card.dataset.severity === f) card.style.display = "";
-            else card.style.display = "none";
-        });
-    });
-});
-</script>
+        <div class="col-md-6 mb-3">
+            <label class="form-label">Estimated End</label>
+            <input type="datetime-local" name="end_time" class="form-control">
+        </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="d-flex gap-2 mt-3">
+        <button type="submit" class="btn btn-primary">Create Ticket</button>
+        <a href="{{ url_for('view_tickets') }}" class="btn btn-secondary">View Tickets</a>
+    </div>
+
+</form>
 
 {% endblock %}
