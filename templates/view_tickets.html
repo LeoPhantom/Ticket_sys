@@ -19,6 +19,7 @@
     <div class="row g-3">
         {% for t in tickets %}
         <div class="col-md-6 col-lg-4 ticket-card-wrapper"
+             id="ticket-{{ t.id }}"
              data-severity="{{ t.get('severity_impact', t.get('severity','none')) }}">
 
             <div class="card shadow-sm h-100">
@@ -95,7 +96,7 @@
     </div>
 
     {% else %}
-    <p class="text-center text-muted mt-4">Noet.</p>
+    <p class="text-center text-muted mt-4">No tickets.</p>
     {% endif %}
 
 </div>
@@ -166,11 +167,12 @@
           </div>
 
         </div>
-
+         <input type="hidden" name="linked_ticket" id="linked-ticket">
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">Create</button>
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
         </div>
+       
       </form>
 
     </div>
@@ -199,8 +201,7 @@ document.querySelectorAll(".status-action").forEach(item => {
         const ok = confirm(`Are you sure you want to change Ticket #${id} to "${status}"?`);
         if (!ok) return;
 
-        // Status update
-        updateStatus(id, status);
+       
 
         // If approved → prefill modal + show it
         if (status === "approved") {
@@ -214,11 +215,17 @@ document.querySelectorAll(".status-action").forEach(item => {
 
             document.querySelector("#jobModal textarea[name='description']").value =
                 this.dataset.ticketDescription || "";
+            
+            document.getElementById("linked-ticket").value = id;
+
 
             // Show modal
             const modal = new bootstrap.Modal(document.getElementById("jobModal"));
             modal.show();
+            return; 
         }
+         // Status update
+        updateStatus(id, status);
     });
 });
 

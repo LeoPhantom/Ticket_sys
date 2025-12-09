@@ -59,6 +59,7 @@ def view_tickets():
 @app.route('/jobs', methods=['GET', 'POST'])
 def new_job():
     if request.method == 'POST':
+        linked_ticket = request.form.get("linked_ticket") or None
         name = request.form['name']
         operator = request.form['operator']
         description = request.form['description']
@@ -73,6 +74,13 @@ def new_job():
         
         id = set_id('job')
 
+        if linked_ticket:
+            tickets = load_tickets()
+            for ticket in tickets:
+                 if str(ticket["id"]) == str(linked_ticket):
+                        ticket["status"] = "approved"
+            save_ticket(tickets)
+
         jobs.append({
             'id' : id,
             'name': name,
@@ -82,6 +90,7 @@ def new_job():
             'impact_customer': impact_customer,
             'impact_desc': impact_desc,
             'status' : status,
+            'linked_ticket': linked_ticket,
             'start_time': start_time,
             'end_time': end_time
         })
