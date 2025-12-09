@@ -2,8 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for
 from scripts import *
 from controler import *
 import sys
-import json
-import os
+
 
 
 app = Flask(__name__)
