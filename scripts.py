@@ -5,7 +5,7 @@ def clean_up(type):
     try:
         if type == 'tickets':
             ticket_file = "data/tickets.json"
-            index_file = "data/ticket_indexs.json"
+            index_file = "data/ticket_index.json"
 
             if os.path.exists(ticket_file) and os.path.exists(index_file):
 
@@ -27,7 +27,7 @@ def clean_up(type):
 
         elif type == 'jobs':
             job_file = "data/jobs.json"
-            job_index = "data/job_indexs.json"
+            job_index = "data/job_index.json"
 
             if os.path.exists(job_file) and os.path.exists(job_index):
 
