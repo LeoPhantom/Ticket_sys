@@ -1,1 +1,14 @@
-[]
+[
+    {
+        "id": 1,
+        "name": "Test",
+        "operator": "Admin",
+        "description": "None",
+        "impact": "no",
+        "impact_customer": "no",
+        "impact_desc": "None",
+        "status": "None",
+        "start_time": "2029-10-09T15:40",
+        "end_time": "2030-10-09T15:40"
+    }
+]

@@ -75,7 +75,11 @@
                             </button>
                                 <ul class="dropdown-menu dropdown-menu-end">
                                 <li><a class="dropdown-item status-action" data-id="{{ t.id }}" data-status="ack" href="#">Acknowledge</a></li>
-                                <li><a class="dropdown-item status-action" data-id="{{ t.id }}" data-status="approved" href="#">Approved</a></li>
+                                <li><a class="dropdown-item status-action" data-id="{{ t.id }}" data-status="approved"  href="#"
+                                        data-ticket-name="{{ t.title }}"
+                                        data-ticket-operator="{{ t.operator }}"
+                                        data-ticket-description="{{ t.description }}"> Approved  </a></li>
+                                    
                                 <li><a class="dropdown-item status-action" data-id="{{ t.id }}" data-status="denied" href="#">Denied</a></li>
                                 <li><a class="dropdown-item status-action" data-id="{{ t.id }}" data-status="resolved" href="#">Resolved</a></li>
                                 </ul>
@@ -191,22 +195,36 @@ document.querySelectorAll(".status-action").forEach(item => {
         const id = this.dataset.id;
         const status = this.dataset.status;
 
-        // Open the Job Modal ONLY when selecting "approved"
+        // Ask for confirmation first
+        const ok = confirm(`Are you sure you want to change Ticket #${id} to "${status}"?`);
+        if (!ok) return;
+
+        // Status update
+        updateStatus(id, status);
+
+        // If approved → prefill modal + show it
         if (status === "approved") {
+
+            // Prefill fields using the <a> data- attributes
+            document.querySelector("#jobModal input[name='name']").value =
+                this.dataset.ticketName || "";
+
+            document.querySelector("#jobModal input[name='operator']").value =
+                this.dataset.ticketOperator || "";
+
+            document.querySelector("#jobModal textarea[name='description']").value =
+                this.dataset.ticketDescription || "";
+
+            // Show modal
             const modal = new bootstrap.Modal(document.getElementById("jobModal"));
             modal.show();
         }
-
-        // Continue with normal status update
-        updateStatus(id, status);
     });
 });
 
 
-// Update Ticket Status
+// Update Ticket Status -------------------------
 function updateStatus(id, status) {
-    const ok = confirm(`Are you sure you want to change Ticket #${id} to "${status}"?`);
-    if (!ok) return;
 
     fetch(`/update_status/${id}`, {
         method: "POST",
@@ -221,16 +239,11 @@ function updateStatus(id, status) {
         // Update button text
         btn.textContent = status.charAt(0).toUpperCase() + status.slice(1);
 
-        // REMOVE ONLY THE COLOR CLASSES
+        // Remove old colors
         btn.classList.remove(
-            "btn-success",
-            "btn-danger",
-            "btn-warning",
-            "btn-primary",
-            "btn-secondary"
+            "btn-success", "btn-danger", "btn-warning",
+            "btn-primary", "btn-secondary"
         );
-
-        // DO NOT REMOVE dropdown-toggle and btn classes !!!
 
         // Apply new color
         if (status === "approved") btn.classList.add("btn-success");
