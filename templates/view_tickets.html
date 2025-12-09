@@ -96,6 +96,83 @@
 
 </div>
 
+<div class="modal fade" id="jobModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title">Create New Job</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <form method="POST" action="{{ url_for('new_job') }}">
+        <div class="modal-body">
+
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input name="name" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Operator</label>
+            <input name="operator" class="form-control" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea name="description" class="form-control" rows="3"></textarea>
+          </div>
+
+          <!-- Impact + Customer Impact -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Impact</label>
+              <select name="impact" class="form-select">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+              </select>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Impact on Customer</label>
+              <select name="impactCustomer" class="form-select">
+                <option value="no">No</option>
+                <option value="yes">Yes</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Impact Description -->
+          <div class="mb-3">
+            <label class="form-label">Impact Details</label>
+            <textarea name="impactDesc" class="form-control" rows="2"></textarea>
+          </div>
+
+          <!-- Start & End Time -->
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Start Time</label>
+              <input type="datetime-local" name="time_start" class="form-control" required>
+            </div>
+
+            <div class="col-md-6 mb-3">
+              <label class="form-label">End Time</label>
+              <input type="datetime-local" name="time_end" class="form-control" required>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-primary">Create</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
 <script>
 // Filtering
 document.querySelectorAll('[data-filter]').forEach(btn => {
@@ -109,10 +186,22 @@ document.querySelectorAll('[data-filter]').forEach(btn => {
 
 document.querySelectorAll(".status-action").forEach(item => {
     item.addEventListener("click", function (e) {
-        e.preventDefault();  // prevents browser navigation
-        updateStatus(this.dataset.id, this.dataset.status);
+        e.preventDefault();
+
+        const id = this.dataset.id;
+        const status = this.dataset.status;
+
+        // Open the Job Modal ONLY when selecting "approved"
+        if (status === "approved") {
+            const modal = new bootstrap.Modal(document.getElementById("jobModal"));
+            modal.show();
+        }
+
+        // Continue with normal status update
+        updateStatus(id, status);
     });
 });
+
 
 // Update Ticket Status
 function updateStatus(id, status) {
@@ -158,5 +247,7 @@ function updateStatus(id, status) {
 }
 </script>
 
+
+
+
 {% endblock %}
- tickets y

@@ -128,6 +128,7 @@ def delete_ticket(ticket_id):
     save_ticket(tickets)
     return redirect(url_for('view_tickets'))
 
+
 if __name__ == "__main__":
     if len(sys.argv) >= 3 and sys.argv[1] == "-c":
         cleanup_type = sys.argv[2].lower()
