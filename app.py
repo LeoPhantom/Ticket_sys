@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 from scripts import *
 from controler import *
 import sys
-
+import json
 
 
 app = Flask(__name__)
@@ -20,7 +20,8 @@ def new_ticket():
         operator = request.form.get('operator')
         urgency = request.form.get('urgency')
         description = request.form.get('description')
-        severity = request.form.get('severity_impact')   # from dropdown/badge
+        severity = request.form.get('severity_impact')
+        status = 'None'   # from dropdown/badge
         start_time = request.form['start_time']
         end_time = request.form['end_time']
 
@@ -38,6 +39,7 @@ def new_ticket():
             'urgency' : urgency,
             'description': description,
             'severity': severity,
+            'status' : status,
             'start_time': start_time,
             'end_time': end_time
         })
@@ -63,6 +65,7 @@ def new_job():
         impact = request.form.get('impact', 'no')
         impact_customer = request.form.get('impactCustomer', 'no')
         impact_desc = request.form.get('impactDesc', '')
+        status = 'None'
         start_time = request.form['time_start']
         end_time = request.form['time_end']
 
@@ -78,6 +81,7 @@ def new_job():
             'impact': impact,
             'impact_customer': impact_customer,
             'impact_desc': impact_desc,
+            'status' : status,
             'start_time': start_time,
             'end_time': end_time
         })
@@ -88,6 +92,27 @@ def new_job():
 
     jobs = load_jobs()
     return render_template('job_list.html', jobs=jobs)
+
+
+@app.post("/update_status/<int:id>")
+def update_status(id):
+    req = request.get_json()
+    new_status = req.get("status")
+
+    tickets = load_tickets()
+    found = False
+
+    for t in tickets:
+        if t["id"] == id:
+            t["status"] = new_status
+            found = True
+            break
+
+    if not found:
+        return jsonify({"success": False, "error": "Ticket not found"})
+
+    save_ticket(tickets)
+    return jsonify({"success": True})
 
 @app.route('/delete_job/<int:job_id>', methods=['POST'])
 def delete_job(job_id):
