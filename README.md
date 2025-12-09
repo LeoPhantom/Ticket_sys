@@ -53,7 +53,7 @@ Linked ticket ID
 
 Delete jobs safely with confirmation
 
-🎨 UI / UX
+ UI / UX
 
 Fully responsive Bootstrap 5 interface
 
@@ -66,3 +66,7 @@ Pre-filled modal fields when approving tickets
 Each ticket has a unique id="ticket-123" anchor for linking
 
 Optional linking back from job → ticket
+
+
+==== Note ==== 
+Can run app.py -c Jobs or app.py -c tickets to clean json files in /data 
