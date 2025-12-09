@@ -62,6 +62,18 @@
                                 Delete
                             </button>
                         </form>
+                             <div class="dropdown ms-2">
+                                 <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                   Status
+                               </button>
+
+                              <ul class="dropdown-menu dropdown-menu-end">
+                                  <li><a class="dropdown-item" href="#" onclick="updateStatus('{{ t.id }}','ack')">Acknowledge</a></li>
+                                  <li><a class="dropdown-item" href="#" onclick="updateStatus('{{ t.id }}','approved')">Approved</a></li>
+                                  <li><a class="dropdown-item" href="#" onclick="updateStatus('{{ t.id }}','denied')">Denied</a></li>
+                                  <li><a class="dropdown-item" href="#" onclick="updateStatus('{{ t.id }}','resolved')">Resolved</a></li>
+                              </ul>
+                            </div>
                     </div>
 
                 </div>

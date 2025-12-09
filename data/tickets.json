@@ -1,1 +1,12 @@
-[]
+[
+    {
+        "id": 1,
+        "title": "Patching",
+        "operator": "Admin",
+        "urgency": "high",
+        "description": "Need patching in Database servers ASAP",
+        "severity": "high",
+        "start_time": "2037-11-09T14:07",
+        "end_time": "2037-11-28T14:07"
+    }
+]
